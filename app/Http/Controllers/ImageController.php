@@ -22,7 +22,7 @@ class ImageController extends Controller
         // 分頁
         $images = $query->orderBy('created_at', 'desc')->paginate(9);
 
-        return Inertia::render('Welcome', [
+        return Inertia::render('welcome', [
             'images' => $images,
             'searchQuery' => $request->search,
         ]);

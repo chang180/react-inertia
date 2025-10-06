@@ -1,0 +1,25 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圓形 -->
+  <circle cx="90" cy="90" r="90" fill="#0891B2"/>
+  
+  <!-- 相機機身 -->
+  <rect x="45" y="68" width="90" height="54" rx="7" fill="white"/>
+  
+  <!-- 相機鏡頭外圈 -->
+  <circle cx="90" cy="95" r="32" fill="#0891B2"/>
+  
+  <!-- 相機鏡頭內圈 -->
+  <circle cx="90" cy="95" r="22" fill="white"/>
+  
+  <!-- 鏡頭中心 -->
+  <circle cx="90" cy="95" r="14" fill="#0891B2"/>
+  
+  <!-- 閃光燈 -->
+  <rect x="112" y="58" width="16" height="11" rx="3" fill="white"/>
+  
+  <!-- 取景器 -->
+  <rect x="77" y="58" width="26" height="9" rx="3" fill="white"/>
+  
+  <!-- 快門按鈕 -->
+  <circle cx="126" cy="99" r="5" fill="white"/>
+</svg>

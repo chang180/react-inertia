@@ -27,8 +27,7 @@ class ImageFactory extends Factory
             'chihiro031.jpg', 'chihiro032.jpg', 'chihiro033.jpg', 'chihiro034.jpg', 'chihiro035.jpg',
             'chihiro036.jpg', 'chihiro037.jpg', 'chihiro038.jpg', 'chihiro039.jpg', 'chihiro040.jpg',
             'chihiro041.jpg', 'chihiro042.jpg', 'chihiro043.jpg', 'chihiro044.jpg', 'chihiro045.jpg',
-            'chihiro046.jpg', 'chihiro047.jpg', 'chihiro048.jpg', 'chihiro049.jpg', 'chihiro050.jpg',
-            'chihiro051.jpg'
+            'chihiro046.jpg', 'chihiro047.jpg', 'chihiro048.jpg', 'chihiro049.jpg', 'chihiro050.jpg'
         ];
 
         return [
@@ -36,6 +35,7 @@ class ImageFactory extends Factory
             'vibe' => fake()->randomElement(['cozy', 'modern', 'vintage', 'minimalist', 'colorful', 'nature', 'fantasy', 'magical', 'peaceful', 'dreamy']),
             'image_path' => '/images/' . fake()->randomElement($imageFiles),
             'liked_by' => [],
+            'user_id' => \App\Models\User::factory(), // 隨機分配給一個用戶
         ];
     }
 }

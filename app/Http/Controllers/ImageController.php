@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreImageRequest;
 use App\Models\Image;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -39,7 +40,8 @@ class ImageController extends Controller
             'name' => $request->name,
             'vibe' => $request->vibe,
             'image_path' => Storage::url($imagePath),
-            'liked_by' => [],
+            'liked_by' => [], // 保留舊欄位以向後相容
+            'user_id' => 1, // 簡化處理：假設用戶 ID 為 1
         ]);
 
         return redirect()->back()->with('success', '圖片上傳成功！');
@@ -50,21 +52,32 @@ class ImageController extends Controller
         // 簡化版本：假設用戶 ID 為 1（實際應用中應該從認證中獲取）
         $userId = 1;
         
-        $likedBy = $image->liked_by ?? [];
+        $like = Like::where('user_id', $userId)
+                   ->where('image_id', $image->id)
+                   ->first();
         
-        if (in_array($userId, $likedBy)) {
+        if ($like) {
             // 移除喜歡
-            $likedBy = array_filter($likedBy, fn($id) => $id !== $userId);
+            $like->delete();
+            $isLiked = false;
         } else {
             // 添加喜歡
-            $likedBy[] = $userId;
+            Like::create([
+                'user_id' => $userId,
+                'image_id' => $image->id,
+            ]);
+            $isLiked = true;
         }
         
-        $image->update(['liked_by' => array_values($likedBy)]);
+        // 更新舊的 liked_by 欄位以向後相容
+        $likedBy = $image->likes()->pluck('user_id')->toArray();
+        $image->update(['liked_by' => $likedBy]);
 
         return response()->json([
             'success' => true,
-            'liked_by' => $image->liked_by,
+            'isLiked' => $isLiked,
+            'likesCount' => $image->likes_count,
+            'liked_by' => $likedBy, // 向後相容
         ]);
     }
 }

@@ -16,6 +16,15 @@ test('new users can register', function () {
         'password_confirmation' => 'password',
     ]);
 
-    $this->assertAuthenticated();
+    // 檢查用戶是否被創建
+    $this->assertDatabaseHas('users', [
+        'email' => 'test@example.com',
+        'name' => 'Test User',
+    ]);
+
+    // 檢查是否重定向到 dashboard
     $response->assertRedirect(route('dashboard', absolute: false));
+    
+    // 檢查用戶是否被認證
+    $this->assertAuthenticated();
 });

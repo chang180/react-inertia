@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -57,6 +58,8 @@ class User extends Authenticatable
 
     /**
      * Get the likes for the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function likes()
     {
@@ -65,9 +68,74 @@ class User extends Authenticatable
 
     /**
      * Get the images liked by the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function likedImages()
     {
         return $this->belongsToMany(Image::class, 'likes');
+    }
+
+    /**
+     * Check if user is a guest.
+     */
+    public function isGuest(): bool
+    {
+        return $this->role === 'guest';
+    }
+
+    /**
+     * Check if user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is a regular user.
+     */
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    /**
+     * Get or create a guest user for demo purposes.
+     */
+    public static function getOrCreateGuest(): self
+    {
+        $sessionId = session()->getId();
+        
+        return static::firstOrCreate(
+            ['email' => "guest_{$sessionId}@demo.local"],
+            [
+                'name' => '示範訪客',
+                'role' => 'guest',
+                'password' => bcrypt(uniqid('guest_', true)), // 隨機密碼，無法猜測
+            ]
+        );
+    }
+
+    /**
+     * Check if this user can be authenticated through normal login.
+     * Guest users should not be able to login normally.
+     */
+    public function canLogin(): bool
+    {
+        return $this->role !== 'guest';
+    }
+
+    /**
+     * Override the default password verification to prevent guest login.
+     */
+    public function checkPassword($password): bool
+    {
+        // Guest users cannot login with password
+        if ($this->isGuest()) {
+            return false;
+        }
+        
+        return parent::checkPassword($password);
     }
 }

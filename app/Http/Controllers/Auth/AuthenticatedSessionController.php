@@ -32,6 +32,13 @@ class AuthenticatedSessionController extends Controller
     {
         $user = $request->validateCredentials();
 
+        // 防止 Guest 用戶通過正常登入流程進入系統
+        if (!$user->canLogin()) {
+            return back()->withErrors([
+                'email' => '此帳戶無法通過正常登入流程進入系統。',
+            ]);
+        }
+
         if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
             $request->session()->put([
                 'login.id' => $user->getKey(),

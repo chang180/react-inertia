@@ -19,10 +19,10 @@ interface LoginProps {
 export default function Login({ status, canResetPassword }: LoginProps) {
     return (
         <AuthLayout
-            title="Log in to your account"
-            description="Enter your email and password below to log in"
+            title="登入您的帳戶"
+            description="請輸入您的電子郵件和密碼以登入"
         >
-            <Head title="Log in" />
+            <Head title="登入" />
 
             <Form
                 {...AuthenticatedSessionController.store.form()}
@@ -33,7 +33,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">電子郵件地址</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -42,21 +42,21 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder="請輸入您的電子郵件"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">密碼</Label>
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
                                             className="ml-auto text-sm"
                                             tabIndex={5}
                                         >
-                                            Forgot password?
+                                            忘記密碼？
                                         </TextLink>
                                     )}
                                 </div>
@@ -67,7 +67,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
+                                    placeholder="請輸入您的密碼"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -78,7 +78,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <Label htmlFor="remember">記住我</Label>
                             </div>
 
                             <Button
@@ -91,14 +91,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 {processing && (
                                     <LoaderCircle className="h-4 w-4 animate-spin" />
                                 )}
-                                Log in
+                                登入
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Don't have an account?{' '}
+                            還沒有帳戶？{' '}
                             <TextLink href={register()} tabIndex={5}>
-                                Sign up
+                                立即註冊
                             </TextLink>
                         </div>
                     </>
